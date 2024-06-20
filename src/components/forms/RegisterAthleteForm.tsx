@@ -83,7 +83,7 @@ export default function RegisterAthleteForm({ disciplines, clubs, onSubmit }: Pr
 
 					<div>
 						<Label>Gender</Label>
-						<Select required={true} onValueChange={setSelectedGender}>
+						<Select required={true} value={selectedGender} onValueChange={setSelectedGender}>
 							<SelectTrigger className="w-full">
 								<SelectValue />
 							</SelectTrigger>

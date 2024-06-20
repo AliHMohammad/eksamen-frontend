@@ -5,26 +5,35 @@ import { toast } from "@/components/ui/use-toast";
 import DataTable, { PaginationSize } from "@/components/table/DataTable.tsx";
 import { Button } from "@/components/ui/button";
 import { IPagination } from "@/models/IPagination";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import IAthlete from "@/models/IAthlete.ts";
 import { AthletesColumns } from "@/components/table/columns/AthletesColumns.tsx";
 import AthletesEndpoint from "@/services/AthletesEndpoint.ts";
+import IClub from "@/models/IClub.ts";
+import ClubsEndpoint from "@/services/ClubsEndpoint.ts";
 
 export default function AthletesTablePage() {
 	const [athletes, setAthletes] = useState<IPagination<IAthlete> | null>(null);
+	const [clubs, setClubs] = useState<IClub[]>([])
 	const [pagination, setPagination] = useState<PaginationSize>({
 		pageIndex: 0, //initial page index
-		pageSize: 5, //default page size
+		pageSize: 3, //default page size
 	});
 	const [sort, setSort] = useState({
 		sortBy: "id",
 		sortDir: "ASC",
 	});
-	const [filter, setFilter] = useState("");
+	const [gender, setGender] = useState("");
+	const [selectedClubId, setSelectedClubId] = useState("");
 	const [search, setSearch] = useState("");
 	const {discipline} = useParams();
-	console.log(discipline);
+
+
+	useEffect(() => {
+		ClubsEndpoint.getClubs()
+			.then(r => setClubs(r))
+	}, []);
 
 	useEffect(() => {
 		const queryParams = new URLSearchParams({
@@ -33,9 +42,10 @@ export default function AthletesTablePage() {
 			...sort,
 		});
 
-		if (filter != "none") queryParams.append("filterBy", filter);
+		if (gender != "none" && gender) queryParams.append("gender", gender);
 		if (search) queryParams.append("searchBy", search);
 		if (discipline) queryParams.append("discipline", discipline)
+		if (selectedClubId != "none" && selectedClubId) queryParams.append("club", selectedClubId)
 
 		console.log(queryParams);
 
@@ -53,7 +63,7 @@ export default function AthletesTablePage() {
 				});
 			})
 
-	}, [pagination, sort, filter, search]);
+	}, [pagination, sort, gender, search, discipline, selectedClubId]);
 
 
 	return (
@@ -84,9 +94,9 @@ export default function AthletesTablePage() {
 										</SelectTrigger>
 										<SelectContent>
 											<SelectItem value="id">ID</SelectItem>
-											<SelectItem value="name">Navn</SelectItem>
-											<SelectItem value="price">Pris</SelectItem>
-											<SelectItem value="stock">Antal</SelectItem>
+											<SelectItem value="dateOfBirth">Age</SelectItem>
+											<SelectItem value="firstName">First Name</SelectItem>
+											<SelectItem value="lastName">Last Name</SelectItem>
 										</SelectContent>
 									</Select>
 
@@ -110,18 +120,30 @@ export default function AthletesTablePage() {
 								<Select
 									onValueChange={(value) => {
 										setPagination((prevState) => ({ ...prevState, pageIndex: 0 }));
-										setFilter(value);
+										setGender(value);
 									}}
 								>
 									<SelectTrigger className="w-[160px] bg-gray-100">
-										<SelectValue placeholder="Filtrer efter" />
+										<SelectValue placeholder="Gender" />
 									</SelectTrigger>
 									<SelectContent>
-										<SelectItem value="none">Ingen</SelectItem>
-										<SelectItem value="Snacks">Snacks</SelectItem>
-										<SelectItem value="Alkohol">Alkohol</SelectItem>
-										<SelectItem value="Drikkevarer">Drikkevarer</SelectItem>
-										<SelectItem value="Andet">Andet</SelectItem>
+										<SelectItem value="none">All Genders</SelectItem>
+										<SelectItem value="MALE">Male</SelectItem>
+										<SelectItem value="FEMALE">Female</SelectItem>
+										<SelectItem value="OTHER">Other</SelectItem>
+									</SelectContent>
+								</Select>
+								<Select onValueChange={value => setSelectedClubId(value)}>
+									<SelectTrigger className="w-[160px] bg-gray-100">
+										<SelectValue placeholder={"Club"} />
+									</SelectTrigger>
+									<SelectContent>
+										<SelectGroup>
+											<SelectItem value="none">All Clubs</SelectItem>
+											{clubs.map(c => (
+												<SelectItem key={`club-${c.id}`} value={String(c.id)}>{c.name}</SelectItem>
+											))}
+										</SelectGroup>
 									</SelectContent>
 								</Select>
 							</div>
