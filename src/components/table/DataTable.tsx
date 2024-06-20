@@ -52,8 +52,8 @@ export default function DataTable<TData, TValue>({ columns, data, pagination }: 
 						))
 					) : (
 						<TableRow>
-							<TableCell colSpan={columns.length} className="h-24 text-center">
-								No Results.
+							<TableCell colSpan={columns.length} className="h-24 text-center text-white">
+								No Results
 							</TableCell>
 						</TableRow>
 					)}
