@@ -15,7 +15,7 @@ class ApiClient {
 	}
 
 
-	public async Get<T>(path: string, params?: TParams): Promise<ApiResponse<T>> {
+	public async Get<T>(path: string, params?: URLSearchParams): Promise<ApiResponse<T>> {
 		const requestUrl = this.getURL(path, params);
 		const response = await fetch(requestUrl);
 
@@ -68,13 +68,16 @@ class ApiClient {
 		return this.handleResponse<T>(response);
 	}
 
-	private getURL(path: string, params?: TParams): URL {
+	private getURL(path: string, params?: URLSearchParams): URL {
 		const url = new URL(this.baseUrl);
 		url.pathname = path;
 
 		if (params) {
-			Object.entries(params).forEach(([key, value]) => url.searchParams.append(key, value));
+			params.forEach((value, key) => url.searchParams.append(key, value));
 		}
+
+		console.log(url);
+
 
 		return url;
 	}

@@ -11,7 +11,7 @@ export default function AdminDashboardPage() {
 					<FaPersonRunning  className="group-hover:text-orange-300 group-hover:scale-105 transition-all" size={130} />
 				</DashboardButton>
 
-				<DashboardButton text="Kalender" linkTo="calender">
+				<DashboardButton text="Athletes" linkTo="athletes/disciplines">
 					<FaPersonRunning className="group-hover:text-orange-300 group-hover:scale-105 transition-all" size={130} />
 				</DashboardButton>
 

@@ -11,7 +11,7 @@ type Props = {
 export default function DashboardButton({ text, children, linkTo }: Props) {
 	return (
 		<Link to={linkTo}>
-			<article className="h-32 sm:h-48  w-fit flex flex-col justify-between group">
+			<article className="h-32 sm:h-48  w-fit flex flex-col justify-between items-center group">
 				{children}
 				<Button className="font-semibold hover:bg-orange-300 text-xl scale-75 sm:scale-100">{text}</Button>
 			</article>
