@@ -8,6 +8,7 @@ import RegisterPage from "@/pages/RegisterPage.tsx";
 import AthletesTablePage from "@/pages/AthletesTablePage.tsx";
 import AthletesDisciplinePage from "@/pages/AthletesDisciplinePage.tsx";
 import AthletesEditPage from "@/pages/AthletesEditPage.tsx";
+import AthletesDetailsPage from "@/pages/AthletesDetailsPage.tsx";
 
 function App() {
 	return (
@@ -21,6 +22,7 @@ function App() {
 						<Route index element={<AthletesDisciplinePage/>} />
 						<Route path=":discipline" element={<AthletesTablePage/>}/>
 						<Route path=":discipline/form" element={<AthletesEditPage/>}/>
+						<Route path=":discipline/detailed" element={<AthletesDetailsPage/>}/>
 					</Route>
 
 
