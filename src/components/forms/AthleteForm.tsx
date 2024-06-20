@@ -23,15 +23,18 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover"
+import IAthlete from "@/models/IAthlete.ts";
 
 
 type Props = {
 	disciplines: IDiscipline[],
 	clubs: IClub[],
-	onSubmit: (request: TAthleteRequest) => void
+	onSubmit: (request?: TAthleteRequest) => void
+	athleteToEdit?: IAthlete
 }
 
 export type TAthleteRequest = {
+	id?: number,
 	fullName: string,
 	gender: string,
 	dateOfBirth: Date,
@@ -39,12 +42,12 @@ export type TAthleteRequest = {
 	disciplineIds: number[]
 }
 
-export default function RegisterAthleteForm({ disciplines, clubs, onSubmit }: Props) {
-	const [fullName, setFullName] = useState<string>("");
-	const [selectedGender, setSelectedGender] = useState<string>("");
-	const [dateOfBirth, setDateOfBirth] = useState<Date>();
-	const [selectedDisciplineIds, setSelectedDisciplineIds] = useState<number[]>([]);
-	const [selectedClubId, setSelectedClubId] = useState<number | null>(null);
+export default function AthleteForm({ disciplines, clubs, onSubmit, athleteToEdit }: Props) {
+	const [fullName, setFullName] = useState<string>(athleteToEdit?.fullName || "");
+	const [selectedGender, setSelectedGender] = useState<string>(athleteToEdit?.gender.toUpperCase() || "");
+	const [dateOfBirth, setDateOfBirth] = useState<Date | undefined>(athleteToEdit?.dateOfBirth || undefined);
+	const [selectedDisciplineIds, setSelectedDisciplineIds] = useState<number[]>(athleteToEdit?.disciplines.map(d => d.id) || []);
+	const [selectedClubId, setSelectedClubId] = useState<number | null>(athleteToEdit?.club.id || null);
 
 	const handleCheckboxChange = (selectedId: number) => {
 		console.log("HELLO");
@@ -66,8 +69,6 @@ export default function RegisterAthleteForm({ disciplines, clubs, onSubmit }: Pr
 
 		onSubmit(payload);
 	}
-
-
 
 	return (
 		<>
@@ -99,7 +100,7 @@ export default function RegisterAthleteForm({ disciplines, clubs, onSubmit }: Pr
 
 					<div>
 						<Label>Club</Label>
-						<Select required={true} onValueChange={value => setSelectedClubId((Number(value)))}>
+						<Select required={true} value={String(selectedClubId)} onValueChange={value => setSelectedClubId((Number(value)))}>
 							<SelectTrigger className="w-full">
 								<SelectValue placeholder={"Select your team"} />
 							</SelectTrigger>
@@ -119,7 +120,7 @@ export default function RegisterAthleteForm({ disciplines, clubs, onSubmit }: Pr
 							<div key={`discipline-${d.id}`} className="flex items-center justify-between">
 
 								<label htmlFor={`discipline-${d.id}`}>{d.name}</label>
-								<Checkbox id={`discipline-${d.id}`} value={d.id} onClick={(e) => handleCheckboxChange(Number((e.target as HTMLButtonElement).value))} />
+								<Checkbox checked={selectedDisciplineIds.includes(d.id)} id={`discipline-${d.id}`} value={d.id} onClick={(e) => handleCheckboxChange(Number((e.target as HTMLButtonElement).value))} />
 							</div>
 						))}
 					</div>
@@ -150,7 +151,7 @@ export default function RegisterAthleteForm({ disciplines, clubs, onSubmit }: Pr
 									showOutsideDays
 									fixedWeeks
 									toDate={new Date(Date.now())}
-									defaultMonth={new Date(1990, 8)}
+									defaultMonth={athleteToEdit?.dateOfBirth || new Date(1990, 8)}
 									fromYear={1940}
 									toYear={new Date(Date.now()).getFullYear()}
 									// captionLayout={"dropdown-buttons"}
@@ -158,7 +159,12 @@ export default function RegisterAthleteForm({ disciplines, clubs, onSubmit }: Pr
 							</PopoverContent>
 						</Popover>
 					</div>
-					<div className={"flex justify-center py-4"}>
+					<div className={"flex justify-center space-x-5 py-5"}>
+						{athleteToEdit && (
+							<Button className={"bg-red-600 hover:bg-red-800 transition-all"} type={"button"} onClick={() => onSubmit(undefined)}>
+								Delete
+							</Button>
+						)}
 						<Button type={"submit"}>
 							Submit
 						</Button>

@@ -1,31 +1,38 @@
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import IDiscipline from "@/models/IDiscipline.ts";
-import AthleteForm, { TAthleteRequest } from "@/components/forms/AthleteForm.tsx";
-import IClub from "@/models/IClub.ts";
 import DisciplinesEndpoint from "@/services/DisciplinesEndpoint.ts";
-import { toast } from "@/components/ui/use-toast";
+import { toast } from "@/components/ui/use-toast.ts";
 import ClubsEndpoint from "@/services/ClubsEndpoint.ts";
+import IDiscipline from "@/models/IDiscipline.ts";
+import IClub from "@/models/IClub.ts";
+import AthleteForm, { TAthleteRequest } from "@/components/forms/AthleteForm.tsx";
 import AthletesEndpoint from "@/services/AthletesEndpoint.ts";
-import { useNavigate } from "react-router-dom";
+import IAthlete from "@/models/IAthlete.ts";
+import athletesEndpoint from "@/services/AthletesEndpoint.ts";
 
 
-export default function RegisterPage() {
+export default function AthletesEditPage() {
 	const [disciplines, setDisciplines] = useState<IDiscipline[]>([]);
 	const [clubs, setClubs] = useState<IClub[]>([]);
+	const athleteToEdit = useLocation().state as IAthlete;
 	const navigate = useNavigate();
+	console.log(athleteToEdit);
 
 	const onSubmit = (payload?: TAthleteRequest) => {
 		if (!payload) {
+			onDelete()
 			return;
 		}
-
-		AthletesEndpoint.createAthlete(payload)
+		console.log("PAYLOAD PAYLOAD");
+		console.log(payload);
+		// Edit
+		AthletesEndpoint.updateAthlete(athleteToEdit.id, payload)
 			.then(() => {
 				toast({
 					title: "Athlete created!",
 					description: "Athlete " + payload.fullName + " created successfully!",
 				});
-				navigate("/")
+				navigate("/");
 			}).catch((e) => {
 				toast({
 					title: "Oh no! Something went wrong.",
@@ -34,6 +41,24 @@ export default function RegisterPage() {
 				});
 			},
 		);
+	};
+
+	const onDelete = () => {
+		AthletesEndpoint.deleteAthlete(athleteToEdit.id)
+			.then(() => {
+				toast({
+					title: "Athlete deleted!",
+					description: "Athlete " + athleteToEdit.fullName + " deleted!",
+				});
+				navigate("/");
+			})
+			.catch((e) => {
+				toast({
+					title: "Oh no! Something went wrong.",
+					description: e.message(),
+					variant: "destructive",
+				});
+			})
 	};
 
 	useEffect(() => {
@@ -63,8 +88,8 @@ export default function RegisterPage() {
 
 	return (
 		<>
-			<h2 className={"text-center my-4"}>Register</h2>
-			<AthleteForm disciplines={disciplines} clubs={clubs} onSubmit={onSubmit} />
+			<h2 className={"text-center my-4"}>Edit Athlete</h2>
+			<AthleteForm disciplines={disciplines} clubs={clubs} onSubmit={onSubmit} athleteToEdit={athleteToEdit} />
 		</>
 	);
 }
