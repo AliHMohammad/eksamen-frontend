@@ -5,7 +5,7 @@ export default function NavBar() {
 		<>
 			<nav className={"flex flex-wrap gap-7 bg-red-300 p-2 text-sm sm:text-lg"}>
 				<NavLink to={"/"}>
-					<h3>Home</h3>
+					<h3>Dashboard</h3>
 				</NavLink>
 			</nav>
 		</>
