@@ -23,7 +23,7 @@ export const AthletesColumns: ColumnDef<IAthlete>[] = [
 	},
 	{
 		accessorKey: "edit",
-		header: "Btns",
+		header: "Manage",
 		cell: ({ row }) => {
 			const athlete = row.original as IAthlete;
 

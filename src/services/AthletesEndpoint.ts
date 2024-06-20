@@ -1,8 +1,8 @@
 import IClub from "@/models/IClub.ts";
 import ApiClient from "@/services/ApiClient.ts";
 import IAthlete from "@/models/IAthlete.ts";
-import { TAthleteRequest } from "@/components/forms/AthleteForm.tsx";
 import { IPagination } from "@/models/IPagination.ts";
+import { TAthleteRequest } from "@/components/forms/AthleteForm.tsx";
 
 class AthletesEndpoint {
 	static async createAthlete(payload: TAthleteRequest): Promise<IAthlete[]> {

@@ -1,87 +1,67 @@
-
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
-import { toast } from "@/components/ui/use-toast";
+import { IPagination } from "@/models/IPagination.ts";
 import DataTable, { PaginationSize } from "@/components/table/DataTable.tsx";
-import { Button } from "@/components/ui/button";
-import { IPagination } from "@/models/IPagination";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import IAthlete from "@/models/IAthlete.ts";
-import { AthletesColumns } from "@/components/table/columns/AthletesColumns.tsx";
-import AthletesEndpoint from "@/services/AthletesEndpoint.ts";
-import IClub from "@/models/IClub.ts";
-import ClubsEndpoint from "@/services/ClubsEndpoint.ts";
+import { useLocation, useParams } from "react-router-dom";
+import { toast } from "@/components/ui/use-toast.ts";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import IDetailedResult from "@/models/IDetailedResult.ts";
+import ResultsEndpoint from "@/services/ResultsEndpoint.ts";
+import { ResultsColumns } from "@/components/table/columns/ResultsColumns.tsx";
+import IDiscipline from "@/models/IDiscipline.ts";
 
-export default function AthletesTablePage() {
-	const [athletes, setAthletes] = useState<IPagination<IAthlete> | null>(null);
-	const [clubs, setClubs] = useState<IClub[]>([])
+
+export default function ResultsTablePage() {
+	const [results, setResults] = useState<IPagination<IDetailedResult> | null>(null);
 	const [pagination, setPagination] = useState<PaginationSize>({
 		pageIndex: 0, //initial page index
-		pageSize: 3, //default page size
+		pageSize: 5, //default page size
 	});
 	const [sort, setSort] = useState({
 		sortBy: "id",
 		sortDir: "ASC",
 	});
 	const [gender, setGender] = useState("");
-	const [selectedClubId, setSelectedClubId] = useState("");
-	const [search, setSearch] = useState("");
-	const {discipline} = useParams();
+	const discipline = useLocation().state as IDiscipline;
+
+	console.log(discipline);
 
 
-	useEffect(() => {
-		ClubsEndpoint.getClubs()
-			.then(r => setClubs(r))
-	}, []);
 
 	useEffect(() => {
 		const queryParams = new URLSearchParams({
 			pageIndex: String(pagination.pageIndex),
 			pageSize: String(pagination.pageSize),
+			discipline: String(discipline.id),
 			...sort,
 		});
 
 		if (gender != "none" && gender) queryParams.append("gender", gender);
-		if (search) queryParams.append("searchBy", search);
-		if (discipline) queryParams.append("discipline", discipline)
-		if (selectedClubId != "none" && selectedClubId) queryParams.append("club", selectedClubId)
 
-		console.log(queryParams);
-
-		AthletesEndpoint.getAthletes(queryParams)
+		ResultsEndpoint.getResults(queryParams)
 			.then((res) => {
 				console.log(res);
-				setAthletes(res)
-
+				setResults(res)
 			})
-			.catch((e) => {
+			.catch((e: Error) => {
 				toast({
 					title: "Oh no! Something went wrong.",
-					description: e.message(),
+					description: e.message,
 					variant: "destructive",
 				});
 			})
 
-	}, [pagination, sort, gender, search, discipline, selectedClubId]);
+	}, [pagination, sort, gender, discipline]);
 
 
 	return (
 		<>
 			<div className="flex flex-col gap-4">
-				<h2 className="text-3xl sm:text-5xl font-bold text-center text-pretty mb-5">Send objektet afsted</h2>
-				{athletes && (
+				<h2 className="text-3xl sm:text-5xl font-bold text-center text-pretty mb-5">{discipline.name}</h2>
+				{results && (
 					<>
 						<div className="flex justify-between">
 							<div className="flex gap-4 flex-wrap">
-								<Input
-									className="w-[200px] bg-gray-100"
-									placeholder="Search Name..."
-									onChange={(e) => {
-										setPagination((prevState) => ({ ...prevState, pageIndex: 0 }));
-										setSearch(e.target.value);
-									}}
-								/>
 								<div className="flex gap-1">
 									<Select
 										onValueChange={(value) => {
@@ -94,9 +74,7 @@ export default function AthletesTablePage() {
 										</SelectTrigger>
 										<SelectContent>
 											<SelectItem value="id">ID</SelectItem>
-											<SelectItem value="dateOfBirth">Age</SelectItem>
-											<SelectItem value="firstName">First Name</SelectItem>
-											<SelectItem value="lastName">Last Name</SelectItem>
+											<SelectItem value="value">Value</SelectItem>
 										</SelectContent>
 									</Select>
 
@@ -133,23 +111,10 @@ export default function AthletesTablePage() {
 										<SelectItem value="OTHER">Other</SelectItem>
 									</SelectContent>
 								</Select>
-								<Select onValueChange={value => setSelectedClubId(value)}>
-									<SelectTrigger className="w-[160px] bg-gray-100">
-										<SelectValue placeholder={"Club"} />
-									</SelectTrigger>
-									<SelectContent>
-										<SelectGroup>
-											<SelectItem value="none">All Clubs</SelectItem>
-											{clubs.map(c => (
-												<SelectItem key={`club-${c.id}`} value={String(c.id)}>{c.name}</SelectItem>
-											))}
-										</SelectGroup>
-									</SelectContent>
-								</Select>
 							</div>
 						</div>
 						<div>
-							<DataTable columns={AthletesColumns} data={athletes.content} pagination={pagination} />
+							<DataTable columns={ResultsColumns} data={results.content} pagination={pagination} />
 						</div>
 						<div className="flex justify-evenly">
 							<Button className="hover:bg-slate-500"
@@ -157,14 +122,14 @@ export default function AthletesTablePage() {
 										...prevState,
 										pageIndex: prevState.pageIndex - 1,
 									}))}
-									disabled={athletes.first}
+									disabled={results.first}
 							>
 								{"Forrige"}
 							</Button>
-							{athletes.totalPages ? (
+							{results.totalPages ? (
 								<p className="text-white">
 									{" "}
-									Side {pagination.pageIndex + 1} / {athletes.totalPages}{" "}
+									Side {pagination.pageIndex + 1} / {results.totalPages}{" "}
 								</p>
 							) : null}
 							<Button className="hover:bg-slate-500"
@@ -172,7 +137,7 @@ export default function AthletesTablePage() {
 										...prevState,
 										pageIndex: prevState.pageIndex + 1,
 									}))}
-									disabled={athletes.last}
+									disabled={results.last}
 							>
 								{"Næste"}
 							</Button>

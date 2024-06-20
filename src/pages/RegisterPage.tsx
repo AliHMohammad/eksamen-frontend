@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import IDiscipline from "@/models/IDiscipline.ts";
-import AthleteForm, { TAthleteRequest } from "@/components/forms/AthleteForm.tsx";
 import IClub from "@/models/IClub.ts";
 import DisciplinesEndpoint from "@/services/DisciplinesEndpoint.ts";
 import { toast } from "@/components/ui/use-toast";
 import ClubsEndpoint from "@/services/ClubsEndpoint.ts";
 import AthletesEndpoint from "@/services/AthletesEndpoint.ts";
 import { useNavigate } from "react-router-dom";
+import AthleteForm, { TAthleteRequest } from "@/components/forms/AthleteForm.tsx";
 
 
 export default function RegisterPage() {
