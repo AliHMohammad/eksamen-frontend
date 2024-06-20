@@ -1,35 +1,49 @@
 import { useEffect, useState } from "react";
 import IDiscipline from "@/models/IDiscipline.ts";
-import RegisterAthleteForm from "@/components/forms/RegisterAthleteForm.tsx";
+import RegisterAthleteForm, { TAthleteRequest } from "@/components/forms/RegisterAthleteForm.tsx";
 import IClub from "@/models/IClub.ts";
 import DisciplinesEndpoint from "@/services/DisciplinesEndpoint.ts";
 import { toast } from "@/components/ui/use-toast";
 import ClubsEndpoint from "@/services/ClubsEndpoint.ts";
-
+import AthletesEndpoint from "@/services/AthletesEndpoint.ts";
+import { useNavigate } from "react-router-dom";
 
 
 export default function RegisterPage() {
-	const [disciplines, setDisciplines] = useState<IDiscipline[]>([])
-	const [clubs, setClubs] = useState<IClub[]>([])
+	const [disciplines, setDisciplines] = useState<IDiscipline[]>([]);
+	const [clubs, setClubs] = useState<IClub[]>([]);
+	const navigate = useNavigate();
 
-	// Fullname
-	// Gender
-	// Date of Birth Kalender
-	// ClubId
-	// IDiscipline Ids (array)
+	const onSubmit = (payload: TAthleteRequest) => {
+		AthletesEndpoint.createAthlete(payload)
+			.then(() => {
+				toast({
+					title: "Athlete created!",
+					description: "Athlete " + payload.fullName + " created successfully!",
+				});
+				navigate("/")
+			}).catch((e) => {
+				toast({
+					title: "Oh no! Something went wrong.",
+					description: e.message(),
+					variant: "destructive",
+				});
+			},
+		);
+	};
 
 	useEffect(() => {
 		DisciplinesEndpoint.getDisciplines()
 			.then((disciplines) => {
-				setDisciplines(disciplines)
+				setDisciplines(disciplines);
 			})
 			.catch((e) => {
 				toast({
-					title: "Åh nej! Noget gik galt!",
+					title: "Oh no! Something went wrong.",
 					description: e.message(),
 					variant: "destructive",
 				});
-			})
+			});
 	}, []);
 
 	useEffect(() => {
@@ -39,15 +53,14 @@ export default function RegisterPage() {
 				toast({
 					title: "Åh nej! Noget gik galt!",
 					description: e.message(),
-					variant: "destructive",
 				});
-			})
+			});
 	}, []);
 
 	return (
 		<>
 			<h2 className={"text-center my-4"}>Register</h2>
-			<RegisterAthleteForm disciplines={disciplines} clubs={clubs}/>
+			<RegisterAthleteForm disciplines={disciplines} clubs={clubs} onSubmit={onSubmit} />
 		</>
-	)
+	);
 }
