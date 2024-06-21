@@ -13,6 +13,9 @@ import ResultsEditPage from "@/pages/ResultsEditPage.tsx";
 import RegisterPage from "@/pages/RegisterPage.tsx";
 import ResultRegisterPage from "@/pages/ResultRegisterPage.tsx";
 import ResultRegisterBulkPage from "@/pages/ResultRegisterBulkPage.tsx";
+import DisciplineDashboard from "@/pages/DisciplinesDashboard.tsx";
+import DisciplinesUpdatePage from "@/pages/DisciplinesUpdatePage.tsx";
+import DisciplinesCreatePage from "@/pages/DisciplinesCreatePage.tsx";
 
 function App() {
 	return (
@@ -36,6 +39,11 @@ function App() {
 						<Route index element={<ResultsDisciplinePage />} />
 						<Route path=":discipline" element={<ResultsTablePage />} />
 						<Route path=":discipline/form" element={<ResultsEditPage />} />
+					</Route>
+					<Route path={"/disciplines"}>
+						<Route index element={<DisciplineDashboard />} />
+						<Route path="update" element={<DisciplinesUpdatePage />} />
+						<Route path="create" element={<DisciplinesCreatePage />} />
 					</Route>
 
 					<Route path="*" element={<h2 className={"text-center text-4xl"}>404 Page not found</h2>} />
