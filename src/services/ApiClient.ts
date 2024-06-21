@@ -1,9 +1,5 @@
 import ApiResponse from "./ApiResponse.ts";
 
-export type TParams = {
-	[key: string]: string;
-};
-
 class ApiClient {
 	private baseUrl: URL;
 

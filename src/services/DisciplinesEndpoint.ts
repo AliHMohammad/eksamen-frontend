@@ -1,5 +1,4 @@
-import ApiClient, { TParams } from "@/services/ApiClient.ts";
-import { IPagination } from "@/models/IPagination.ts";
+import ApiClient from "@/services/ApiClient.ts";
 import IDiscipline from "@/models/IDiscipline.ts";
 import { TDisciplineRequest } from "@/components/forms/CreateDisciplineForm.tsx";
 import { TDisciplineTypeRequest } from "@/components/forms/UpdateDisciplineForm.tsx";

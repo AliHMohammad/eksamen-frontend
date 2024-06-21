@@ -1,4 +1,3 @@
-import IClub from "@/models/IClub.ts";
 import ApiClient from "@/services/ApiClient.ts";
 import IAthlete from "@/models/IAthlete.ts";
 import { IPagination } from "@/models/IPagination.ts";

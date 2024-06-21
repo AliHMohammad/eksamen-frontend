@@ -2,7 +2,6 @@ import ApiClient from "@/services/ApiClient.ts";
 import { IPagination } from "@/models/IPagination.ts";
 import IDetailedResult from "@/models/IDetailedResult.ts";
 import IAthlete from "@/models/IAthlete.ts";
-import { TAthleteRequest } from "@/components/forms/AthleteForm.tsx";
 import { TResultRequest } from "@/components/forms/ResultForm.tsx";
 
 class ResultsEndpoint {
