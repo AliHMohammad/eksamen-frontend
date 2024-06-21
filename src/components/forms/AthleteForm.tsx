@@ -34,7 +34,6 @@ type Props = {
 }
 
 export type TAthleteRequest = {
-	id?: number,
 	fullName: string,
 	gender: string,
 	dateOfBirth: Date,

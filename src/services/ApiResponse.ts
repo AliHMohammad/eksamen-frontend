@@ -18,9 +18,10 @@ class ApiResponse<T> {
 	public async setError(errorObj: { [key: string]: string }): Promise<void> {
 		try {
 			// const errorObj = (await response.json()) as { [key: string]: string };
-			this.errorMessage = Object.entries(errorObj)
-				.map(([key, value]) => `${key}: ${value}`)
-				.join(", ");
+			// this.errorMessage = Object.entries(errorObj)
+			// 	.map(([key, value]) => `${key}: ${value}`)
+			// 	.join(", ");
+			this.errorMessage = errorObj.message;
 		} catch (error) {
 			console.error("Failed to parse error response:", error);
 			this.errorMessage = "Unknown error occurred";

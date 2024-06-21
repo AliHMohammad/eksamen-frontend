@@ -25,6 +25,16 @@ class AthletesEndpoint {
 		return resp.value!;
 	}
 
+	static async getAllAthletes(): Promise<IAthlete[]> {
+		const resp = await new ApiClient().Get<Promise<IAthlete[]>>("athletes/all");
+
+		if (!resp.ok) {
+			throw new Error(resp.error);
+		}
+
+		return resp.value ?? [];
+	}
+
 	static async deleteAthlete(athleteId: number) {
 		const resp = await new ApiClient().Delete<IAthlete>(`athletes/${athleteId}`);
 

@@ -15,7 +15,7 @@ export default function AthletesDisciplinePage() {
 			.catch((e) => {
 				toast({
 					title: "Oh no! Something went wrong.",
-					description: e.message(),
+					description: e.message,
 					variant: "destructive",
 				});
 			})

@@ -1,35 +1,34 @@
-import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import DisciplinesEndpoint from "@/services/DisciplinesEndpoint.ts";
 import { toast } from "@/components/ui/use-toast.ts";
-import ClubsEndpoint from "@/services/ClubsEndpoint.ts";
 import IDiscipline from "@/models/IDiscipline.ts";
-import IClub from "@/models/IClub.ts";
-import AthleteForm, { TAthleteRequest } from "@/components/forms/AthleteForm.tsx";
+import ResultForm, { TResultRequest } from "@/components/forms/ResultForm.tsx";
+import { useLocation, useNavigate } from "react-router-dom";
+import IDetailedResult from "@/models/IDetailedResult.ts";
 import AthletesEndpoint from "@/services/AthletesEndpoint.ts";
 import IAthlete from "@/models/IAthlete.ts";
-import athletesEndpoint from "@/services/AthletesEndpoint.ts";
+import ResultsEndpoint from "@/services/ResultsEndpoint.ts";
 
 
-export default function AthletesEditPage() {
-	const [disciplines, setDisciplines] = useState<IDiscipline[]>([]);
-	const [clubs, setClubs] = useState<IClub[]>([]);
-	const athleteToEdit = useLocation().state as IAthlete;
+export default function ResultsEditPage() {
+	const resultToEdit = useLocation().state as IDetailedResult;
+	const [disciplines, setDisciplines] = useState<IDiscipline[] | null>(null);
+	const [athletes, setAthletes] = useState<IAthlete[] | null>(null);
 	const navigate = useNavigate();
-	console.log(athleteToEdit);
 
-	const onSubmit = (payload?: TAthleteRequest) => {
+	const onSubmit = (payload?: TResultRequest) => {
 		if (!payload) {
 			onDelete()
 			return;
 		}
-
+		console.log("PAYLOAD PAYLOAD");
+		console.log(payload);
 		// Edit
-		AthletesEndpoint.updateAthlete(athleteToEdit.id, payload)
+		ResultsEndpoint.updateResult(resultToEdit.id, payload)
 			.then(() => {
 				toast({
 					title: "Athlete created!",
-					description: "Athlete " + payload.fullName + " created successfully!",
+					description: "Result with value " + payload.value + " at " + payload.date + " created successfully!",
 				});
 				navigate("/");
 			}).catch((e) => {
@@ -43,11 +42,11 @@ export default function AthletesEditPage() {
 	};
 
 	const onDelete = () => {
-		AthletesEndpoint.deleteAthlete(athleteToEdit.id)
+		ResultsEndpoint.deleteResult(resultToEdit.id)
 			.then(() => {
 				toast({
 					title: "Athlete deleted!",
-					description: "Athlete " + athleteToEdit.fullName + " deleted!",
+					description: "Result with id " + resultToEdit.id + " deleted!",
 				});
 				navigate("/");
 			})
@@ -75,20 +74,23 @@ export default function AthletesEditPage() {
 	}, []);
 
 	useEffect(() => {
-		ClubsEndpoint.getClubs()
-			.then((clubs) => setClubs(clubs))
+		AthletesEndpoint.getAllAthletes()
+			.then((r) => setAthletes(r))
 			.catch((e) => {
 				toast({
-					title: "Åh nej! Noget gik galt!",
+					title: "Oh no! Something went wrong.",
 					description: e.message,
+					variant: "destructive",
 				});
-			});
+			})
+
+
 	}, []);
 
 	return (
 		<>
-			<h2 className={"text-center my-4"}>Edit Athlete</h2>
-			<AthleteForm disciplines={disciplines} clubs={clubs} onSubmit={onSubmit} athleteToEdit={athleteToEdit} />
+			<h2 className={"text-center my-4"}>Edit Result</h2>
+			{disciplines && athletes && <ResultForm disciplines={disciplines} athletes={athletes} onSubmit={onSubmit} resultToEdit={resultToEdit} />}
 		</>
-	);
+	)
 }

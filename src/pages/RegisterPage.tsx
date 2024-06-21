@@ -29,7 +29,7 @@ export default function RegisterPage() {
 			}).catch((e) => {
 				toast({
 					title: "Oh no! Something went wrong.",
-					description: e.message(),
+					description: e.message,
 					variant: "destructive",
 				});
 			},
@@ -44,7 +44,7 @@ export default function RegisterPage() {
 			.catch((e) => {
 				toast({
 					title: "Oh no! Something went wrong.",
-					description: e.message(),
+					description: e.message,
 					variant: "destructive",
 				});
 			});
@@ -56,7 +56,7 @@ export default function RegisterPage() {
 			.catch((e) => {
 				toast({
 					title: "Åh nej! Noget gik galt!",
-					description: e.message(),
+					description: e.message,
 				});
 			});
 	}, []);
