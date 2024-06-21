@@ -20,8 +20,6 @@ export default function RegisterPage() {
 					<DashboardButton text="Bulk Result" linkTo="result/bulk">
 						<FaPeoplePulling className="group-hover:text-orange-300 group-hover:scale-105 transition-all" size={130} />
 					</DashboardButton>
-
-
 				</div>
 			</section>
 		</>
