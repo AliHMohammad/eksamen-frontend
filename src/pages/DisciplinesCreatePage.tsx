@@ -30,7 +30,7 @@ export default function DisciplinesCreatePage() {
 
 	return (
 		<>
-			<h2 className={"text-center my-4"}>Register Result</h2>
+			<h2 className={"text-center my-4"}>Create Discipline</h2>
 			<CreateDisciplineForm disciplineName={disciplineName} setDisciplineName={setDisciplineName} resultType={resultType} setResultType={setResultType} onSubmit={onSubmit} />
 		</>
 	);
