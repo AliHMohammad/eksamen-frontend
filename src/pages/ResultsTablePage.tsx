@@ -15,7 +15,7 @@ export default function ResultsTablePage() {
 	const [results, setResults] = useState<IPagination<IDetailedResult> | null>(null);
 	const [pagination, setPagination] = useState<PaginationSize>({
 		pageIndex: 0, //initial page index
-		pageSize: 5, //default page size
+		pageSize: 3, //default page size
 	});
 	const [sort, setSort] = useState({
 		sortBy: "id",

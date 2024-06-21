@@ -13,7 +13,7 @@ import ResultsEditPage from "@/pages/ResultsEditPage.tsx";
 import RegisterPage from "@/pages/RegisterPage.tsx";
 import ResultRegisterPage from "@/pages/ResultRegisterPage.tsx";
 import ResultRegisterBulkPage from "@/pages/ResultRegisterBulkPage.tsx";
-import DisciplineDashboard from "@/pages/DisciplinesDashboard.tsx";
+import DisciplineDashboard from "@/pages/DisciplinesDashboardPage.tsx";
 import DisciplinesUpdatePage from "@/pages/DisciplinesUpdatePage.tsx";
 import DisciplinesCreatePage from "@/pages/DisciplinesCreatePage.tsx";
 
