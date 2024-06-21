@@ -40,7 +40,6 @@ export default function ResultsTablePage() {
 
 		ResultsEndpoint.getResults(queryParams)
 			.then((res) => {
-				console.log(res);
 				setResults(res)
 			})
 			.catch((e: Error) => {

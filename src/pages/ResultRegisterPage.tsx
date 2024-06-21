@@ -23,7 +23,7 @@ export default function ResultRegisterPage() {
 		ResultsEndpoint.createResult(payload)
 			.then(() => {
 				toast({
-					title: "Athlete created!",
+					title: "Result created!",
 					description: "Result with value " + payload.value + " at " + payload.date + " created successfully!",
 				});
 				navigate("/");

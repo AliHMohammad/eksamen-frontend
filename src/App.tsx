@@ -12,6 +12,7 @@ import ResultsTablePage from "@/pages/ResultsTablePage.tsx";
 import ResultsEditPage from "@/pages/ResultsEditPage.tsx";
 import RegisterPage from "@/pages/RegisterPage.tsx";
 import ResultRegisterPage from "@/pages/ResultRegisterPage.tsx";
+import ResultRegisterBulkPage from "@/pages/ResultRegisterBulkPage.tsx";
 
 function App() {
 	return (
@@ -22,7 +23,8 @@ function App() {
 					<Route path="register">
 						<Route index element={<RegisterPage />} />
 						<Route path="athlete" element={<AthleteRegisterPage />} />
-						<Route path="result" element={<ResultRegisterPage/>}/>
+						<Route path="result" element={<ResultRegisterPage />} />
+						<Route path="result/bulk" element={<ResultRegisterBulkPage />} />
 					</Route>
 					<Route path="/athletes/disciplines">
 						<Route index element={<AthletesDisciplinePage />} />
@@ -36,8 +38,7 @@ function App() {
 						<Route path=":discipline/form" element={<ResultsEditPage />} />
 					</Route>
 
-
-					<Route path="*" element={<h2>404 Page not found</h2>} />
+					<Route path="*" element={<h2 className={"text-center text-4xl"}>404 Page not found</h2>} />
 				</Routes>
 			</PageLayout>
 			<Toaster />
