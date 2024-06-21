@@ -19,7 +19,6 @@ export const ResultsColumns: ColumnDef<IDetailedResult>[] = [
 
 			if (result.discipline.resultType == "Milliseconds") {
 				convertedValue = convertMilliSeconds(result.value) + " (HH:MM:ss:SSS)";
-				console.log(convertedValue);
 			} else if (result.discipline.resultType == "Points") {
 				convertedValue = result.value + " pt.";
 			} else if (result.discipline.resultType == "Millimeter") {

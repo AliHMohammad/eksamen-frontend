@@ -24,8 +24,6 @@ export default function ResultsTablePage() {
 	const [gender, setGender] = useState("");
 	const discipline = useLocation().state as IDiscipline;
 
-	console.log(discipline);
-
 
 
 	useEffect(() => {

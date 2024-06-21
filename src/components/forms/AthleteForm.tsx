@@ -49,7 +49,6 @@ export default function AthleteForm({ disciplines, clubs, onSubmit, athleteToEdi
 	const [selectedClubId, setSelectedClubId] = useState<number | null>(athleteToEdit?.club.id || null);
 
 	const handleCheckboxChange = (selectedId: number) => {
-		console.log("HELLO");
 		if (selectedDisciplineIds.includes(selectedId)) {
 			setSelectedDisciplineIds((prev) => prev.filter(p => p !== selectedId))
 		} else {

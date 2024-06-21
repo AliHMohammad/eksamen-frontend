@@ -50,8 +50,6 @@ export default function ResultForm({ resultToEdit, disciplines, athletes, onSubm
 		setSelectedDisciplineId(newDisciplineId);
 	};
 
-	console.log(valueType);
-
 	return (
 		<>
 			<div className={"w-80 flex justify-center mx-auto py-5 bg-slate-300 border-4"}>

@@ -16,7 +16,6 @@ export default function AthletesEditPage() {
 	const [clubs, setClubs] = useState<IClub[]>([]);
 	const athleteToEdit = useLocation().state as IAthlete;
 	const navigate = useNavigate();
-	console.log(athleteToEdit);
 
 	const onSubmit = (payload?: TAthleteRequest) => {
 		if (!payload) {

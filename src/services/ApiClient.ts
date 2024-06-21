@@ -76,9 +76,6 @@ class ApiClient {
 			params.forEach((value, key) => url.searchParams.append(key, value));
 		}
 
-		console.log(url);
-
-
 		return url;
 	}
 

@@ -21,8 +21,7 @@ export default function ResultsEditPage() {
 			onDelete()
 			return;
 		}
-		console.log("PAYLOAD PAYLOAD");
-		console.log(payload);
+
 		// Edit
 		ResultsEndpoint.updateResult(resultToEdit.id, payload)
 			.then(() => {

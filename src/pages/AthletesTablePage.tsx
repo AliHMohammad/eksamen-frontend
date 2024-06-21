@@ -49,9 +49,7 @@ export default function AthletesTablePage() {
 
 		AthletesEndpoint.getAthletes(queryParams)
 			.then((res) => {
-				console.log(res);
 				setAthletes(res)
-
 			})
 			.catch((e) => {
 				toast({
