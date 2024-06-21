@@ -29,7 +29,7 @@ export default function AthletesDisciplinePage() {
 				<div className="flex gap-10 sm:gap-16 justify-center flex-col sm:flex-row">
 					{disciplines.map((d) => (
 						<>
-							<DashboardButton key={`${d.name}-${d.id}`} text={d.name} linkTo={String(d.id)}>
+							<DashboardButton key={`${d.name}-${d.id}`} text={d.name} linkTo={String(d.id)} state={d}>
 								<SiBookstack className="group-hover:text-orange-300 group-hover:scale-105 transition-all" size={130} />
 							</DashboardButton>
 						</>

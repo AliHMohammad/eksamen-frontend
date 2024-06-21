@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { toast } from "@/components/ui/use-toast";
 import DataTable, { PaginationSize } from "@/components/table/DataTable.tsx";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ import { AthletesColumns } from "@/components/table/columns/AthletesColumns.tsx"
 import AthletesEndpoint from "@/services/AthletesEndpoint.ts";
 import IClub from "@/models/IClub.ts";
 import ClubsEndpoint from "@/services/ClubsEndpoint.ts";
+import IDiscipline from "@/models/IDiscipline.ts";
 
 export default function AthletesTablePage() {
 	const [athletes, setAthletes] = useState<IPagination<IAthlete> | null>(null);
@@ -27,8 +28,7 @@ export default function AthletesTablePage() {
 	const [gender, setGender] = useState("");
 	const [selectedClubId, setSelectedClubId] = useState("");
 	const [search, setSearch] = useState("");
-	const {discipline} = useParams();
-
+	const discipline = useLocation().state as IDiscipline;
 
 	useEffect(() => {
 		ClubsEndpoint.getClubs()
@@ -39,15 +39,13 @@ export default function AthletesTablePage() {
 		const queryParams = new URLSearchParams({
 			pageIndex: String(pagination.pageIndex),
 			pageSize: String(pagination.pageSize),
+			discipline: String(discipline.id),
 			...sort,
 		});
 
 		if (gender != "none" && gender) queryParams.append("gender", gender);
 		if (search) queryParams.append("searchBy", search);
-		if (discipline) queryParams.append("discipline", discipline)
 		if (selectedClubId != "none" && selectedClubId) queryParams.append("club", selectedClubId)
-
-		console.log(queryParams);
 
 		AthletesEndpoint.getAthletes(queryParams)
 			.then((res) => {
@@ -69,7 +67,7 @@ export default function AthletesTablePage() {
 	return (
 		<>
 			<div className="flex flex-col gap-4">
-				<h2 className="text-3xl sm:text-5xl font-bold text-center text-pretty mb-5">Send objektet afsted</h2>
+				<h2 className="text-3xl sm:text-5xl font-bold text-center text-pretty mb-5">Athletes - {discipline.name}</h2>
 				{athletes && (
 					<>
 						<div className="flex justify-between">
