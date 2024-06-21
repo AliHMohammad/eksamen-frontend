@@ -1,34 +1,30 @@
 import { useEffect, useState } from "react";
+import IDiscipline from "@/models/IDiscipline.ts";
+import IAthlete from "@/models/IAthlete.ts";
+import { useNavigate } from "react-router-dom";
 import DisciplinesEndpoint from "@/services/DisciplinesEndpoint.ts";
 import { toast } from "@/components/ui/use-toast.ts";
-import IDiscipline from "@/models/IDiscipline.ts";
-import ResultForm, { TResultRequest } from "@/components/forms/ResultForm.tsx";
-import { useLocation, useNavigate } from "react-router-dom";
-import IDetailedResult from "@/models/IDetailedResult.ts";
 import AthletesEndpoint from "@/services/AthletesEndpoint.ts";
-import IAthlete from "@/models/IAthlete.ts";
+import ResultForm, { TResultRequest } from "@/components/forms/ResultForm.tsx";
 import ResultsEndpoint from "@/services/ResultsEndpoint.ts";
 
 
-export default function ResultsEditPage() {
-	const resultToEdit = useLocation().state as IDetailedResult;
+export default function ResultRegisterPage() {
 	const [disciplines, setDisciplines] = useState<IDiscipline[] | null>(null);
 	const [athletes, setAthletes] = useState<IAthlete[] | null>(null);
 	const navigate = useNavigate();
 
 	const onSubmit = (payload?: TResultRequest) => {
 		if (!payload) {
-			onDelete()
 			return;
 		}
-		console.log("PAYLOAD PAYLOAD");
-		console.log(payload);
-		// Edit
-		ResultsEndpoint.updateResult(resultToEdit.id, payload)
+
+		// Post
+		ResultsEndpoint.createResult(payload)
 			.then(() => {
 				toast({
-					title: "Result updated!",
-					description: "Result with value " + payload.value + " at " + payload.date + " updated successfully!",
+					title: "Athlete created!",
+					description: "Result with value " + payload.value + " at " + payload.date + " created successfully!",
 				});
 				navigate("/");
 			}).catch((e) => {
@@ -39,24 +35,6 @@ export default function ResultsEditPage() {
 				});
 			},
 		);
-	};
-
-	const onDelete = () => {
-		ResultsEndpoint.deleteResult(resultToEdit.id)
-			.then(() => {
-				toast({
-					title: "Athlete deleted!",
-					description: "Result with id " + resultToEdit.id + " deleted!",
-				});
-				navigate("/");
-			})
-			.catch((e) => {
-				toast({
-					title: "Oh no! Something went wrong.",
-					description: e.message,
-					variant: "destructive",
-				});
-			})
 	};
 
 	useEffect(() => {
@@ -84,13 +62,12 @@ export default function ResultsEditPage() {
 				});
 			})
 
-
 	}, []);
 
 	return (
 		<>
-			<h2 className={"text-center my-4"}>Edit Result</h2>
-			{disciplines && athletes && <ResultForm disciplines={disciplines} athletes={athletes} onSubmit={onSubmit} resultToEdit={resultToEdit} />}
+			<h2 className={"text-center my-4"}>Register Result</h2>
+			{disciplines && athletes && <ResultForm disciplines={disciplines} athletes={athletes} onSubmit={onSubmit} />}
 		</>
 	)
 }

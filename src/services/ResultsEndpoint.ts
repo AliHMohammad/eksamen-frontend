@@ -36,6 +36,16 @@ class ResultsEndpoint {
 		return resp.value;
 	}
 
+	static async createResult(payload: TResultRequest) {
+		const resp = await new ApiClient().Post<IDetailedResult, TResultRequest>(`results`, payload);
+
+		if (!resp.ok) {
+			throw new Error(resp.error);
+		}
+
+		return resp.value;
+	}
+
 }
 
 export default ResultsEndpoint;

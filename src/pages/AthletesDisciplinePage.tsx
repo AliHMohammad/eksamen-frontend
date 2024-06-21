@@ -4,7 +4,7 @@ import DisciplinesEndpoint from "@/services/DisciplinesEndpoint.ts";
 import { toast } from "@/components/ui/use-toast.ts";
 import { FaPersonRunning } from "react-icons/fa6";
 import DashboardButton from "@/components/core/DashboardButton.tsx";
-
+import { SiBookstack } from "react-icons/si";
 
 export default function AthletesDisciplinePage() {
 	const [disciplines, setDisciplines] = useState<IDiscipline[]>([])
@@ -30,7 +30,7 @@ export default function AthletesDisciplinePage() {
 					{disciplines.map((d) => (
 						<>
 							<DashboardButton key={`${d.name}-${d.id}`} text={d.name} linkTo={String(d.id)}>
-								<FaPersonRunning className="group-hover:text-orange-300 group-hover:scale-105 transition-all" size={130} />
+								<SiBookstack className="group-hover:text-orange-300 group-hover:scale-105 transition-all" size={130} />
 							</DashboardButton>
 						</>
 					))}

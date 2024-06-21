@@ -45,10 +45,12 @@ export default function ResultForm({ resultToEdit, disciplines, athletes, onSubm
 	};
 
 	const handleChangeDiscipline = (newDisciplineId: number) => {
-		const dis = disciplines.find(d => d.id == selectedDisciplineId);
-		setSelectedDisciplineId(newDisciplineId);
+		const dis = disciplines.find(d => d.id == newDisciplineId);
 		setValueType(dis?.resultType);
+		setSelectedDisciplineId(newDisciplineId);
 	};
+
+	console.log(valueType);
 
 	return (
 		<>
@@ -128,7 +130,6 @@ export default function ResultForm({ resultToEdit, disciplines, athletes, onSubm
 									toDate={new Date(Date.now())}
 									defaultMonth={resultToEdit?.date}
 									fromYear={1940}
-									toYear={new Date(Date.now()).getFullYear()}
 									// captionLayout={"dropdown-buttons"}
 								/>
 							</PopoverContent>

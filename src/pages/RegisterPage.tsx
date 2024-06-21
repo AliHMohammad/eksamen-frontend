@@ -1,70 +1,24 @@
-import { useEffect, useState } from "react";
-import IDiscipline from "@/models/IDiscipline.ts";
-import IClub from "@/models/IClub.ts";
-import DisciplinesEndpoint from "@/services/DisciplinesEndpoint.ts";
-import { toast } from "@/components/ui/use-toast";
-import ClubsEndpoint from "@/services/ClubsEndpoint.ts";
-import AthletesEndpoint from "@/services/AthletesEndpoint.ts";
-import { useNavigate } from "react-router-dom";
-import AthleteForm, { TAthleteRequest } from "@/components/forms/AthleteForm.tsx";
-
+import DashboardButton from "@/components/core/DashboardButton.tsx";
+import { FaClipboardUser } from "react-icons/fa6";
+import { BsClipboard2DataFill } from "react-icons/bs";
 
 export default function RegisterPage() {
-	const [disciplines, setDisciplines] = useState<IDiscipline[]>([]);
-	const [clubs, setClubs] = useState<IClub[]>([]);
-	const navigate = useNavigate();
-
-	const onSubmit = (payload?: TAthleteRequest) => {
-		if (!payload) {
-			return;
-		}
-
-		AthletesEndpoint.createAthlete(payload)
-			.then(() => {
-				toast({
-					title: "Athlete created!",
-					description: "Athlete " + payload.fullName + " created successfully!",
-				});
-				navigate("/")
-			}).catch((e) => {
-				toast({
-					title: "Oh no! Something went wrong.",
-					description: e.message,
-					variant: "destructive",
-				});
-			},
-		);
-	};
-
-	useEffect(() => {
-		DisciplinesEndpoint.getDisciplines()
-			.then((disciplines) => {
-				setDisciplines(disciplines);
-			})
-			.catch((e) => {
-				toast({
-					title: "Oh no! Something went wrong.",
-					description: e.message,
-					variant: "destructive",
-				});
-			});
-	}, []);
-
-	useEffect(() => {
-		ClubsEndpoint.getClubs()
-			.then((clubs) => setClubs(clubs))
-			.catch((e) => {
-				toast({
-					title: "Åh nej! Noget gik galt!",
-					description: e.message,
-				});
-			});
-	}, []);
-
 	return (
 		<>
-			<h2 className={"text-center my-4"}>Register</h2>
-			<AthleteForm disciplines={disciplines} clubs={clubs} onSubmit={onSubmit} />
+			<section className="flex flex-col gap-10 justify-center items-center">
+				<h2 className=" text-3xl sm:text-5xl font-bold text-center text-pretty">Register</h2>
+				<div className="flex gap-10 sm:gap-16 justify-center flex-col sm:flex-row">
+					<DashboardButton text="Athlete" linkTo="athlete">
+						<FaClipboardUser className="group-hover:text-orange-300 group-hover:scale-105 transition-all" size={130} />
+					</DashboardButton>
+
+					<DashboardButton text="Result" linkTo="result">
+						<BsClipboard2DataFill  className="group-hover:text-orange-300 group-hover:scale-105 transition-all" size={130} />
+					</DashboardButton>
+
+
+				</div>
+			</section>
 		</>
-	);
+	)
 }
